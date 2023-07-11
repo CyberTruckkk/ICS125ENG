@@ -3,20 +3,11 @@
 9EKD,Vancouver,Victoria,Vegetable
 3HQC,Seattle,Vancouver,Pharmaceutical
 4HQC,Seat,Ver,Pharmaceutical4
-5HQC,shanghai,Vancou,Pharmaceutical5
-6HQC,shenzhen,Van,6Pharmaceutical5
-7HQC,shenzhen,Van,6Pharmaceutical5
-1qwe, Victoria, Vancouver, qqq
-1qwe, Victoria, Vancouver, Pycharm
-1111, Victoria, Vancouver, Pycharm
-1111, , , 
-111122, , , 
-6666, , , 
-1234, Victoria, Vancouver, Pycharm
-1QWE,1 Victoria,2 Vancouver,3 
-1QWE,1 Victoria,2 Vancouver,3 
-1QWE,1 Victoria,2 Vancouver,3 6666a
-1QQQ,1 Victoria,2 Vancouver,3 initial
-1QQQ,1 Victoria,2 Vancouver,3 initial
-1QQQ,1 Victoria,2 Vancouver,3 initial
-1QAZ,1 Vancouver,2 Victoria,3 ActionEvent
+6HQC,shanghai,Vancou,Pharmaceutical5
+1QWR,Victoria,Vancouver,q
+1QWF,Victoria,Vancouver,sss
+1KLJ,Seattle,Victoria,g
+1FGB,Victoria,Seattle,BBB
+1VBN,Prince George,Victoria,SSCZ
+3LKJ,Victoria,Vancouver,sbn
+1DDD,Victoria,Prince George,s
