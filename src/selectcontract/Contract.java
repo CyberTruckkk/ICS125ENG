@@ -13,8 +13,9 @@ public class Contract {
     private String orderItem;
     private String checker;
     public final String[] Citys = {"Victoria", "Vancouver", "Seattle", "Nanaimo", "Prince George"};
-     ArrayList<String> orderidList;
+    ArrayList<String> orderidList;
     public static String newContractSave = System.getProperty("user.dir") + "\\src\\selectcontract\\contracts.txt";
+    public static boolean boolMatch = false;
 
     public Contract(String contractID, String originCity, String destCity, String orderItem) {
         this.contractID = contractID;
@@ -42,9 +43,7 @@ public class Contract {
     }
 
     public void setContractID(String contractID) {
-        System.out.println(this.orderidList.toString());
         getOrderIdList();
-        System.out.println(this.orderidList.toString());
         contractID = contractID.toUpperCase();
         System.out.println(this.orderidList.contains(contractID));
         if (this.orderidList.contains(contractID)) {
@@ -52,22 +51,22 @@ public class Contract {
             return;
         }
         System.out.println("dup check fail");
-        boolean boolMatch = contractID.matches("[1-9][a-zA-Z]{3}");
+        boolMatch = contractID.matches("[1-9][a-zA-Z]{3}");
         if (!boolMatch) {
             checker = "invalid orderID format:[1-9][a-zA-Z]{3}";
             return;
         }
-        System.out.println("id format check pass");
+//        System.out.println("id format check pass");
         Boolean dup = this.orderidList.contains(contractID);
-        System.out.println("boolean dup is contains " +dup);
+        System.out.println("boolean dup is contains " + dup);
         if (dup) {
             checker = "dublicated order id";
             return;
         }
         System.out.println(checker);
-        if (boolMatch&&!dup) {
+        if (boolMatch && !dup) {
             checker = "orderID pass";
-            System.out.println("assign id");
+            System.out.println(checker);
             this.contractID = contractID.toUpperCase();
             System.out.println("assign id pass");
         }

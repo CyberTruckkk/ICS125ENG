@@ -14,3 +14,7 @@
 3DSF,Seattle,Victoria,rf15555
 2WSX,Vancouver,Victoria,h
 2WSH,Vancouver,Seattle,a
+3SXC,Victoria,Vancouver,c
+3DFV,Victoria,Vancouver,s
+1ASX,Victoria,Seattle,s
+1ASZ,Victoria,Vancouver,s
