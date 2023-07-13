@@ -29,7 +29,7 @@ class ContractModel {
         this.originCityList = new TreeSet<>();
         this.theContractsAll =new ArrayList<>();
 
-        String filename = "D:\\ICS125ENG\\src\\selectcontract\\contracts.txt";
+        String filename = Contract.newContractSave;
         //M:\125GIT\SelectContract\src\selectcontract
         String[] token;
         try (FileReader fileReader = new FileReader(filename);
@@ -50,6 +50,7 @@ class ContractModel {
             System.out.println(ex.getMessage());
         }
     }
+
 
     public String[] getOriginCityList(){
         String[] a;

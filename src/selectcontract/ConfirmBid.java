@@ -224,9 +224,7 @@ public class ConfirmBid extends JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void JButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JButtonSaveActionPerformed
-//        System.out.println(jSpinner1.getValue());
-//        String fileName = "M:\\125GIT\\SelectContract\\src\\selectcontract\\MyContractBids.txt";
-       // M:\125GIT\SelectContract\src\selectcontract
+
         try {
             BufferedWriter newWrite = new BufferedWriter(new FileWriter(optionsFileName, true));
             ZonedDateTime currentDate;

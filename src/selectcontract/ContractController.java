@@ -29,6 +29,7 @@ class ContractController {
 
         /**
          * Invoked when an action occurs.
+         *
          * @param e the event to be processed
          */
         @Override
@@ -46,8 +47,8 @@ class ContractController {
         }
     }
 
-    class NewContractListener implements ActionListener{
-       private NewContract newContract;
+    class NewContractListener implements ActionListener {
+        private NewContract newContract;
 
         public NewContractListener() {
         }
@@ -60,11 +61,12 @@ class ContractController {
         @Override
         public void actionPerformed(ActionEvent e) {
             NewContract nc;
-            nc = new NewContract(theView,true);
+            nc = new NewContract(theView, true);
             nc.setLocationRelativeTo(null);
             nc.setVisible(true);
         }
     }
+
     //not used in lab5
     class BidButtonListener implements ActionListener {
         private final Contract contract;
@@ -76,21 +78,33 @@ class ContractController {
         public void actionPerformed(ActionEvent e) {
             try {
                 ConfirmBid cb;
-                cb = new ConfirmBid(theView,true,theModel.getTheContract());
+                cb = new ConfirmBid(theView, true, theModel.getTheContract());
                 cb.setLocationRelativeTo(null);
                 cb.setVisible(true);
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 System.out.println(ex);
                 theView.displayErrorMessage("Error: The numbers entered must be integers .");
             }
         }
     }
 
+    public void update(boolean t) {
+        if (t) {
+            theModel = new ContractModel();
+        }
+    }
+
     class NextButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+            final boolean toUpdate = NewContract.isUpdate;
+            System.out.println("NewContract.isUpdate in nextbtn perform before update " + NewContract.isUpdate);
+            update(toUpdate);
+            NewContract.isUpdate = false;
+            System.out.println("NewContract.isUpdate in nextbtn perform after update " + NewContract.isUpdate);
             if (theModel.getCurrentContractNum() == theModel.getContractCount()) {
                 return;
             }
+            System.out.println("106 pass newmodel");
             try {
                 theModel.nextContract();
             } catch (Exception ex) {
@@ -129,12 +143,12 @@ class ContractController {
 
     }
 
-    class ComboListener implements ItemListener{
+    class ComboListener implements ItemListener {
 
         @Override
-        public void itemStateChanged(ItemEvent e){
+        public void itemStateChanged(ItemEvent e) {
 //            System.out.println(e.getItem().toString());
-            if(e.getStateChange() == ItemEvent.SELECTED){
+            if (e.getStateChange() == ItemEvent.SELECTED) {
                 String selectedCity = e.getItem().toString();
                 System.out.println(selectedCity);
                 theModel.updateContractList(selectedCity);

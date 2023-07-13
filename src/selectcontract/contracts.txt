@@ -1,13 +1,16 @@
 4RDW,Victoria,Prince George,Flowers
 8EKD,Vancouver,Victoria,Vegetable
 9EKD,Vancouver,Victoria,Vegetable
-3HQC,Seattle,Vancouver,Pharmaceutical
-4HQC,Seat,Ver,Pharmaceutical4
-6HQC,shanghai,Vancou,Pharmaceutical5
-1QWR,Victoria,Vancouver,q
-1QWF,Victoria,Vancouver,sss
-1KLJ,Seattle,Victoria,g
-1FGB,Victoria,Seattle,BBB
-1VBN,Prince George,Victoria,SSCZ
-3LKJ,Victoria,Vancouver,sbn
-1DDD,Victoria,Prince George,s
+5TGB,Victoria,Vancouver,sss
+1QAZ,Victoria,Vancouver,1Q
+1QAZ,Victoria,Vancouver,SSS
+3EDC,Victoria,Vancouver,SSSS
+4EDC,Victoria,Vancouver,SSSS
+8IOU,Victoria,Seattle,s
+8IBN,Nanaimo,Victoria,d
+9LGH,Prince George,Nanaimo,c
+3YHD,Seattle,Victoria,d
+9OCF,Vancouver,Victoria,gf13
+3DSF,Seattle,Victoria,rf15555
+2WSX,Vancouver,Victoria,h
+2WSH,Vancouver,Seattle,a

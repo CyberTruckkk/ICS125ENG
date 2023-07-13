@@ -5,18 +5,21 @@
 package selectcontract;
 
 import javax.swing.*;
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * @author wenlong
  */
 public class NewContract extends javax.swing.JDialog {
-    private Contract newContract;
-    private String newContractSave = System.getProperty("user.dir") + "\\src\\selectcontract\\contracts.txt";
-    private final String initial = "null";
 
+    private Contract newContract;
+    public ContractModel theModel;
+    public static String newContractSave = System.getProperty("user.dir") + "\\src\\selectcontract\\contracts.txt";
+    private final String initial = "null";
+    public static boolean isUpdate = false;
 
     /**
      * Creates new form NewContract
@@ -27,7 +30,6 @@ public class NewContract extends javax.swing.JDialog {
         this.newContract = new Contract(initial, initial, initial, initial);
         initComponents();
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -54,8 +56,6 @@ public class NewContract extends javax.swing.JDialog {
         saveBTN = new javax.swing.JButton();
         cancelBTN = new javax.swing.JButton();
         CheckBeforeSave = new javax.swing.JLabel();
-        orderCITY = new javax.swing.JTextField();
-        destCITY = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -147,7 +147,7 @@ public class NewContract extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        resetBTN.setBackground(new java.awt.Color(255, 0, 0, 255));
+        resetBTN.setBackground(new java.awt.Color(255, 51, 102));
         resetBTN.setText("RESET");
         resetBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -193,19 +193,7 @@ public class NewContract extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        CheckBeforeSave.setText("CheckBeforeSave");
-
-        orderCITY.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                orderCITYActionPerformed(evt);
-            }
-        });
-
-        destCITY.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                destCITYActionPerformed(evt);
-            }
-        });
+        CheckBeforeSave.setText("Check:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -216,15 +204,8 @@ public class NewContract extends javax.swing.JDialog {
                 .addComponent(CheckBeforeSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(orderCITY, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(44, 44, 44)
-                        .addComponent(destCITY, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(39, 39, 39)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -241,11 +222,7 @@ public class NewContract extends javax.swing.JDialog {
                 .addGap(12, 12, 12)
                 .addComponent(CheckBeforeSave, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(orderCITY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(destCITY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35))
         );
 
@@ -269,53 +246,77 @@ public class NewContract extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void orderCITYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderCITYActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_orderCITYActionPerformed
-
-    private void destCITYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_destCITYActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_destCITYActionPerformed
-
     private void saveBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBTNActionPerformed
 //        while (!this.newContract.getChecker().contains("pass")) {
-        System.out.println(oCITY.getSelectedItem());
-        System.out.println(dCITY.getSelectedItem());
-        this.newContract.setContractID(orderID.getText());
-        orderID.setToolTipText(this.newContract.getChecker());
-//        saveBTN.setToolTipText("just a str");
-//            CheckBeforeSave.setText(this.newContract.getChecker());
-        this.newContract.setOriginCity((String) oCITY.getSelectedItem());
-        saveBTN.setToolTipText(this.newContract.getChecker());
-//            CheckBeforeSave.setText(this.newContract.getChecker());
-        this.newContract.setDestCity((String) dCITY.getSelectedItem());
-        saveBTN.setToolTipText(this.newContract.getChecker());
-//            CheckBeforeSave.setText(this.newContract.getChecker());
-        this.newContract.setOrderItem(orderITEM.getText());
-        orderITEM.setToolTipText(this.newContract.getChecker());
-//            CheckBeforeSave.setText(this.newContract.getChecker());
-        if (this.newContract.getContractID().contains(initial) || this.newContract.getContractID().isBlank())
-            return;
-        if (this.newContract.getOriginCity().contains(initial) || this.newContract.getOriginCity().isBlank())
-            return;
-        if (this.newContract.getDestCity().contains(initial) || newContract.getDestCity().isBlank())
-            return;
-        if (newContract.getOrderItem().contains(initial) || this.newContract.getOrderItem().isBlank())
-            return;
-        String str = this.newContract.getContractID() + "," + this.newContract.getOriginCity() + "," + this.newContract.getDestCity() + "," + this.newContract.getOrderItem();
-        System.out.println(str);
-        if (str.contains(initial)) {
-            str = null;
-            return;
-        }
         try {
+            System.out.println("orderID.getText().isBlank() " + orderID.getText() + "t/f " + orderID.getText().isBlank());
+            if (orderID.getText().isBlank()) {
+                System.out.println("orderID.getText() is empty");
+                return;
+            }
+            this.newContract.getOrderIdList();
+            boolean idISduplicated = this.newContract.orderidList.contains(orderID.getText().toUpperCase());
+            System.out.println(idISduplicated);
+            if(idISduplicated){
+                return;
+            }
+            String id = orderID.getText();
+            String it = orderITEM.getText();
+
+            if (id.isBlank() || it.isBlank()) {
+                return;
+            }
+            System.out.println("296");
+            ArrayList<String> idList = new ArrayList<>();
+
+            this.newContract.setContractID(orderID.getText());
+            System.out.println("300  " + orderID.getText());
+            orderID.setToolTipText(this.newContract.getChecker());
+
+            this.newContract.setOriginCity((String) oCITY.getSelectedItem());
+            saveBTN.setToolTipText(this.newContract.getChecker());
+
+            this.newContract.setDestCity((String) dCITY.getSelectedItem());
+            saveBTN.setToolTipText(this.newContract.getChecker());
+
+            this.newContract.setOrderItem(orderITEM.getText());
+            orderITEM.setToolTipText(this.newContract.getChecker());
+
+            System.out.println("315");
+            if (this.newContract.getContractID().contains(initial) || this.newContract.getContractID().isBlank()) {
+                System.out.println("initial 317  " + this.newContract.getContractID().contains(initial) + " " + this.newContract.getContractID());
+                System.out.println("isblank 317  " + this.newContract.getContractID().isBlank());
+                return;
+            }
+            System.out.println("318");
+            if (this.newContract.getOriginCity().contains(initial) || this.newContract.getOriginCity().isBlank()) {
+                return;
+            }
+            if (this.newContract.getDestCity().contains(initial) || newContract.getDestCity().isBlank()) {
+                return;
+            }
+            System.out.println("324");
+            if (newContract.getOrderItem().contains(initial) || this.newContract.getOrderItem().isBlank()) {
+                return;
+            }
+            String str = null;
+            System.out.println("before str check empty: id.isBlank()||it.isBlank() " + (id.isBlank() || it.isBlank()));
+            str = this.newContract.getContractID() + "," + this.newContract.getOriginCity() + "," + this.newContract.getDestCity() + "," + this.newContract.getOrderItem();
+            System.out.println(str);
+            if (str.contains(initial) || str == null || str.isBlank() || str.isEmpty() || str.contains("x")) {
+                return;
+            }
             BufferedWriter newWrite = new BufferedWriter(new FileWriter(newContractSave, true));
             newWrite.write(str);
+            isUpdate=true;
+            resetBTN.doClick();
             newWrite.newLine();
             newWrite.close();
-            String str2 = "new contract : " +str + "has been saved successfully";
+            String str2 = "new contract : " + str + "has been saved successfully";
+            System.out.println(str2);
             JOptionPane.showMessageDialog(null, str2);
-            resetBTN.doClick();
+//            cancelBTN.doClick();
+            return;
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
@@ -395,7 +396,6 @@ public class NewContract extends javax.swing.JDialog {
     private javax.swing.JLabel CheckBeforeSave;
     private javax.swing.JButton cancelBTN;
     private javax.swing.JComboBox<String> dCITY;
-    private javax.swing.JTextField destCITY;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -405,7 +405,6 @@ public class NewContract extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JComboBox<String> oCITY;
-    private javax.swing.JTextField orderCITY;
     private javax.swing.JTextField orderID;
     private javax.swing.JTextField orderITEM;
     private javax.swing.JButton resetBTN;

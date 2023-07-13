@@ -13,8 +13,8 @@ public class Contract {
     private String orderItem;
     private String checker;
     public final String[] Citys = {"Victoria", "Vancouver", "Seattle", "Nanaimo", "Prince George"};
-    private ArrayList<String> orderidList;
-    private String newContractSave = System.getProperty("user.dir") + "\\src\\selectcontract\\contracts.txt";
+     ArrayList<String> orderidList;
+    public static String newContractSave = System.getProperty("user.dir") + "\\src\\selectcontract\\contracts.txt";
 
     public Contract(String contractID, String originCity, String destCity, String orderItem) {
         this.contractID = contractID;
@@ -34,7 +34,7 @@ public class Contract {
                 String id = token[0];
                 this.orderidList.add(id);
             }
-            System.out.println(Arrays.stream(orderidList.toArray()).toList());
+//            System.out.println(Arrays.stream(orderidList.toArray()).toList());
             fileReader.close();
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
@@ -42,16 +42,34 @@ public class Contract {
     }
 
     public void setContractID(String contractID) {
-        if (!contractID.matches("[1-9][a-zA-Z]{3}")) {
+        System.out.println(this.orderidList.toString());
+        getOrderIdList();
+        System.out.println(this.orderidList.toString());
+        contractID = contractID.toUpperCase();
+        System.out.println(this.orderidList.contains(contractID));
+        if (this.orderidList.contains(contractID)) {
+            System.out.println("id duplicated");
+            return;
+        }
+        System.out.println("dup check fail");
+        boolean boolMatch = contractID.matches("[1-9][a-zA-Z]{3}");
+        if (!boolMatch) {
             checker = "invalid orderID format:[1-9][a-zA-Z]{3}";
             return;
         }
-        if (this.orderidList.contains(contractID)) {
+        System.out.println("id format check pass");
+        Boolean dup = this.orderidList.contains(contractID);
+        System.out.println("boolean dup is contains " +dup);
+        if (dup) {
             checker = "dublicated order id";
             return;
-        } else if (contractID.matches("[1-9][a-zA-Z]{3}")) {
+        }
+        System.out.println(checker);
+        if (boolMatch&&!dup) {
             checker = "orderID pass";
+            System.out.println("assign id");
             this.contractID = contractID.toUpperCase();
+            System.out.println("assign id pass");
         }
     }
 
