@@ -1,20 +1,58 @@
 4RDW,Victoria,Prince George,Flowers
 8EKD,Vancouver,Victoria,Vegetable
-9EKD,Vancouver,Victoria,Vegetable
-5TGB,Victoria,Vancouver,sss
-1QAZ,Victoria,Vancouver,1Q
-1QAZ,Victoria,Vancouver,SSS
-3EDC,Victoria,Vancouver,SSSS
-4EDC,Victoria,Vancouver,SSSS
-8IOU,Victoria,Seattle,s
-8IBN,Nanaimo,Victoria,d
-9LGH,Prince George,Nanaimo,c
-3YHD,Seattle,Victoria,d
-9OCF,Vancouver,Victoria,gf13
-3DSF,Seattle,Victoria,rf15555
-2WSX,Vancouver,Victoria,h
-2WSH,Vancouver,Seattle,a
-3SXC,Victoria,Vancouver,c
-3DFV,Victoria,Vancouver,s
-1ASX,Victoria,Seattle,s
-1ASZ,Victoria,Vancouver,s713
+1SSS,Seattle,Victoria,a
+3KFG,Nanaimo,Victoria,aaa
+9GHB,Victoria,Vancouver,aaaa
+1AAA,Seattle,Victoria,6666a
+6SSS,Victoria,Vancouver,s
+1DDD,Victoria,Vancouver,S
+1MKS,Vancouver,Victoria,sss
+1PML,Seattle,Victoria,sss
+9IIH,Vancouver,Victoria,saw
+9JJD,Vancouver,Victoria,aas
+9UHG,Seattle,Victoria,s
+2EDC,Victoria,Seattle,s
+4ESW,Seattle,Victoria,s
+9OLM,Victoria,Vancouver,oo
+5TGB,Victoria,Seattle,s
+4WER,Victoria,Vancouver,s
+6YHN,Seattle,Victoria,s
+5FVG,Victoria,Vancouver,s
+3YHN,Seattle,Victoria,s
+9QTS,Vancouver,Victoria,s
+2VBS,Vancouver,Nanaimo,a
+1ZHC,Victoria,Vancouver,s
+1SXC,Victoria,Vancouver,s
+4RFV,Seattle,Victoria,s
+8EDC,Victoria,Vancouver,s
+2CVG,Seattle,Victoria,s
+1ZXS,Nanaimo,Victoria,z
+5SSA,Prince George,Victoria,sa
+7UJG,Vancouver,Victoria,s
+6TFS,Victoria,Seattle,s
+1ZXC,Vancouver,Victoria,x
+9OLF,Vancouver,Victoria,mn
+5RFV,Vancouver,Victoria,llk
+9HNJ,Vancouver,Victoria,s
+2WWS,Victoria,Seattle,s
+3EDS,Seattle,Victoria,a
+1WAX,Nanaimo,Victoria,s
+6TFZ,Prince George,Victoria,s
+2WAZ,Vancouver,Victoria,s
+6UTW,Vancouver,Victoria,p
+6TDC,Nanaimo,Victoria,s
+7YHS,Prince George,Victoria,a
+1SXA,Prince George,Victoria,s
+1ZXW,Nanaimo,Victoria,ssa
+1FAC,Prince George,Victoria,s
+1XSA,Nanaimo,Victoria,s
+8OLS,Prince George,Victoria,u
+2ZXQ,Nanaimo,Victoria,s
+5FCA,Vancouver,Victoria,lp
+2SXA,Prince George,Victoria,s
+1ZGC,Seattle,Victoria,s
+8MZL,Prince George,Victoria,s
+1XAR,Nanaimo,Victoria,s
+9MSH,Prince George,Victoria,a
+1AZS,Nanaimo,Victoria,a
+9MSZ,Vancouver,Victoria,ssss

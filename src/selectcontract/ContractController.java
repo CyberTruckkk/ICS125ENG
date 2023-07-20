@@ -10,7 +10,7 @@ import java.awt.event.ItemListener;
  * @author c0527253
  */
 class ContractController {
-    private ContractView theView;
+    private  ContractView theView;
     private ContractModel theModel;
 
     ContractController(ContractView theView, ContractModel theModel) {
@@ -19,6 +19,7 @@ class ContractController {
         this.theView.addPrevListener(new PrevButtonListener());
         this.theView.addBidListener(new BidButtonListener(theModel.getTheContract()));
         this.theView.addNewContractListener(new NewContractListener());
+        this.theView.viewBidsListener(new ViewBidsListener());
         this.theView.addNextListener(new NextButtonListener());
         this.theView.addcomboBoxListener(new ComboListener());
         theView.setOriginCityList(theModel.getOriginCityList());
@@ -26,12 +27,6 @@ class ContractController {
     }
 
     class PrevButtonListener implements ActionListener {
-
-        /**
-         * Invoked when an action occurs.
-         *
-         * @param e the event to be processed
-         */
         @Override
         public void actionPerformed(ActionEvent e) {
             if (theModel.getCurrentContractNum() == 0) {
@@ -67,6 +62,18 @@ class ContractController {
         }
     }
 
+    class ViewBidsListener implements ActionListener{
+        ViewBids viebids;
+        public ViewBidsListener() {
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ViewBids vb = new ViewBids();
+            vb.setLocationRelativeTo(null);
+            vb.setVisible(true);
+        }
+    }
+
     //not used in lab5
     class BidButtonListener implements ActionListener {
         private final Contract contract;
@@ -89,17 +96,31 @@ class ContractController {
     }
 
     public void update(boolean t) {
+        System.out.println(" update ? " + NewContract.isUpdate);
         if (t) {
+            System.out.println(" update ? in if " + NewContract.isUpdate);
             theModel = new ContractModel();
+//            theView = new ContractView();
+            // refresh the view ,can not do anything
+
+
         }
     }
 
     class NextButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            final boolean toUpdate = NewContract.isUpdate;
-            System.out.println("NewContract.isUpdate in nextbtn perform before update " + NewContract.isUpdate);
-            update(toUpdate);
-            NewContract.isUpdate = false;
+
+            System.out.println("NewContract.isUpdate in nextbtn perform before update: - " + NewContract.isUpdate);
+            if(NewContract.isUpdate){
+//                  new ContractController(new ContractView(),new ContractModel());
+                theModel.loadingContracts(NewContract.isUpdate);
+                NewContract.isUpdate=false;
+                update(true);
+//                theModel = new ContractModel();
+//                theView = new ContractView();
+                theModel.reloadOcityList(true);
+                theView.setOriginCityList(theModel.getOriginCityList());
+            }
             System.out.println("NewContract.isUpdate in nextbtn perform after update " + NewContract.isUpdate);
             if (theModel.getCurrentContractNum() == theModel.getContractCount()) {
                 return;
@@ -107,6 +128,7 @@ class ContractController {
             System.out.println("106 pass newmodel");
             try {
                 theModel.nextContract();
+                System.out.println("107 in try");
             } catch (Exception ex) {
                 System.out.println(ex);
                 theView.displayErrorMessage("Error: There is a problem setting a previous contract.");
@@ -147,10 +169,9 @@ class ContractController {
 
         @Override
         public void itemStateChanged(ItemEvent e) {
-//            System.out.println(e.getItem().toString());
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 String selectedCity = e.getItem().toString();
-                System.out.println(selectedCity);
+                System.out.println("filter itemStateChanged "+selectedCity);
                 theModel.updateContractList(selectedCity);
                 setUpDisplay();
             }

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<contracts>
+
+
+    <contract>
+
+
+        <ContractId>3EEE</ContractId>
+
+
+        <Origin>Prince George</Origin>
+
+
+        <Destination>Victoria</Destination>
+
+
+        <Item>eeee</Item>
+
+
+    </contract>
+
+
+    <contract>
+
+
+        <ContractId>1UUU</ContractId>
+
+
+        <Origin>Victoria</Origin>
+
+
+        <Destination>Nanaimo</Destination>
+
+
+        <Item>uuu</Item>
+
+
+    </contract>
+
+
+    <contract>
+
+        <ContractId>2XXX</ContractId>
+
+        <Origin>Prince George</Origin>
+
+        <Destination>Victoria</Destination>
+
+        <Item>xxxx</Item>
+
+    </contract>
+
+    <contract>
+        <ContractId>5TTT</ContractId>
+        <Origin>Vancouver</Origin>
+        <Destination>Victoria</Destination>
+        <Item>tttt</Item>
+    </contract>
+</contracts>

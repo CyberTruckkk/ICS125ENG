@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="w3c-dom">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lab08-jars/w3c-dom.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="jar://$PROJECT_DIR$/lab08-jars/w3c-dom.jar!/" recursive="false" />
+  </library>
+</component>

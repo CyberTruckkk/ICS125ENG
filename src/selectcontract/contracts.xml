@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<contracts>
+                
+    
+    
+    <contract>
+                                
+        
+        
+        <contractID>9HNJ</contractID>
+                                
+        
+        
+        <originCity>Vancouver</originCity>
+                                
+        
+        
+        <destCity>Victoria</destCity>
+                                
+        
+        
+        <orderItem>s</orderItem>
+                            
+    
+    
+    </contract>
+                
+    
+    
+    <contract>
+                                
+        
+        
+        <contractID>2WWS</contractID>
+                                
+        
+        
+        <originCity>Victoria</originCity>
+                                
+        
+        
+        <destCity>Seattle</destCity>
+                                
+        
+        
+        <orderItem>s</orderItem>
+                            
+    
+    
+    </contract>
+                
+    
+    
+    <contract>
+                                
+        
+        
+        <contractID>3EDS</contractID>
+                                
+        
+        
+        <originCity>Seattle</originCity>
+                                
+        
+        
+        <destCity>Victoria</destCity>
+                                
+        
+        
+        <orderItem>a</orderItem>
+                            
+    
+    
+    </contract>
+                
+    
+    
+    <contract>
+                                
+        
+        
+        <contractID>2WAZ</contractID>
+                                
+        
+        
+        <originCity>Vancouver</originCity>
+                                
+        
+        
+        <destCity>Victoria</destCity>
+                                
+        
+        
+        <orderItem>s</orderItem>
+                            
+    
+    
+    </contract>
+                
+    
+    
+    <contract>
+                                
+        
+        
+        <contractID>6UTW</contractID>
+                                
+        
+        
+        <originCity>Vancouver</originCity>
+                                
+        
+        
+        <destCity>Victoria</destCity>
+                                
+        
+        
+        <orderItem>p</orderItem>
+                            
+    
+    
+    </contract>
+                
+    
+    
+    <contract>
+                                
+        
+        
+        <contractID>5FCA</contractID>
+                                
+        
+        
+        <originCity>Vancouver</originCity>
+                                
+        
+        
+        <destCity>Victoria</destCity>
+                                
+        
+        
+        <orderItem>lp</orderItem>
+                            
+    
+    
+    </contract>
+            
+    
+    
+    <contract>
+                        
+        
+        <contractID>9MSH</contractID>
+                        
+        
+        <originCity>Prince George</originCity>
+                        
+        
+        <destCity>Victoria</destCity>
+                        
+        
+        <orderItem>a</orderItem>
+                    
+    
+    </contract>
+        
+    
+    <contract>
+                
+        <contractID>1AZS</contractID>
+                
+        <originCity>Nanaimo</originCity>
+                
+        <destCity>Victoria</destCity>
+                
+        <orderItem>a</orderItem>
+            
+    </contract>
+    
+    <contract>
+        <contractID>9MSZ</contractID>
+        <originCity>Vancouver</originCity>
+        <destCity>Victoria</destCity>
+        <orderItem>ssss</orderItem>
+    </contract>
+</contracts>

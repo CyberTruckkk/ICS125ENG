@@ -5,31 +5,43 @@ package selectcontract;
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
+
 import javax.swing.*;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.NumberFormat;
+import java.io.*;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author wenlong
  */
 public class ConfirmBid extends JDialog {
-
-    private Contract theContract;
-    private String optionsFileName;
+    public static int checkerCounter = 65;
+    public static String info1 = "";
+    String jsonText;
+    Bids bids;
+    public String line = "";
+    private JSONArray jsonArray = new JSONArray();
+    private final Contract theContract;
+    private static final String optionsFileName = System.getProperty("user.dir") + "\\src\\selectcontract\\output_bids.txt";
+    public static final String bidsFileName = System.getProperty("user.dir") + "\\src\\selectcontract\\bid.json";
+    StringWriter stringWriter;
+//    public  static  String bidsFileName = System.getProperty("user.dir") + "\\src\\selectcontract\\bidss.txt";
 
     /**
      * Creates new form ConfirmBid
      */
-    public ConfirmBid(JFrame f, boolean m, Contract theContract) {
+    public ConfirmBid(JFrame f, boolean m, Contract theContract) throws IOException {
         super(f, m);
         initComponents();
-        this.theContract=theContract;
+        this.theContract = theContract;
         this.JLabelContractlD.setText(theContract.getContractID());
         this.JLabelOrigin.setText(theContract.getOriginCity());
         this.JLabelDestination.setText(theContract.getDestCity());
@@ -40,8 +52,6 @@ public class ConfirmBid extends JDialog {
         Integer stepValue = 50;
         SpinnerModel numModel = new SpinnerNumberModel(startValue, minValue, maxValue, stepValue);
         jSpinner1.setModel(numModel);
-//        optionsFileName = System.getProperty("user.dir") + "\\src\\selectcontract\\output_bids.txt";
-        optionsFileName = System.getProperty("user.dir") + "\\src\\selectcontract\\output_bids.txt";
     }
 
     /**
@@ -67,6 +77,8 @@ public class ConfirmBid extends JDialog {
         jSpinner1 = new javax.swing.JSpinner();
         JButtonSave = new javax.swing.JButton();
         JButtonCancel = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        bidsRLT = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuNewContract = new javax.swing.JMenuItem();
@@ -99,44 +111,44 @@ public class ConfirmBid extends JDialog {
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JLabelContractlD, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(57, 57, 57)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(JLabelOrigin, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(105, 105, 105))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(JLabelDestination, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JLabelOrderltem, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(JLabelContractlD, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(57, 57, 57)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(JLabelOrigin, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(105, 105, 105))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(JLabelDestination, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(JLabelOrderltem, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JLabelContractlD)
-                    .addComponent(JLabelOrigin)
-                    .addComponent(JLabelDestination)
-                    .addComponent(JLabelOrderltem))
-                .addContainerGap(21, Short.MAX_VALUE))
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel3)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel4)
+                                        .addComponent(jLabel5))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(JLabelContractlD)
+                                        .addComponent(JLabelOrigin)
+                                        .addComponent(JLabelDestination)
+                                        .addComponent(JLabelOrderltem))
+                                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         jSpinner1.setModel(new javax.swing.SpinnerNumberModel(100, 100, 10000, 50));
@@ -159,6 +171,10 @@ public class ConfirmBid extends JDialog {
             }
         });
 
+        bidsRLT.setColumns(18);
+        bidsRLT.setRows(5);
+        jScrollPane1.setViewportView(bidsRLT);
+
         jMenu1.setText("File");
 
         jMenuNewContract.setText("jMenuNewContract");
@@ -180,83 +196,285 @@ public class ConfirmBid extends JDialog {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(137, 137, 137)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(15, 15, 15)
-                                .addComponent(JButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(65, 65, 65)
-                                .addComponent(JButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextName, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(105, 105, 105)
-                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(76, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(137, 137, 137)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addGap(15, 15, 15)
+                                                                .addComponent(JButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(65, 65, 65)
+                                                                .addComponent(JButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(jTextName, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(105, 105, 105)
+                                                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(28, 28, 28)
+                                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(20, 20, 20)
+                                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(76, 76, 76)
+                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 585, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap(112, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addComponent(jLabel1)
-                .addGap(38, 38, 38)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JButtonCancel)
-                    .addComponent(JButtonSave))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jTextName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(JButtonCancel)
+                                        .addComponent(JButtonSave))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void JButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JButtonSaveActionPerformed
-
-        try {
-            BufferedWriter newWrite = new BufferedWriter(new FileWriter(optionsFileName, true));
-            ZonedDateTime currentDate;
-            currentDate = ZonedDateTime.now(ZoneId.of("America/Los_Angeles"));
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'  'HH:mm:ss 'PST'");
-            String time = formatter.format(currentDate);
-            double amount = Double.valueOf(jSpinner1.getValue().toString());
-            Locale locale = new Locale("en", "CA");
-            NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
-            String formattedAmount = currencyFormatter.format(amount);
-            String name = jTextName.getText();
-            String str = name + "," + JLabelContractlD.getText() + "," + formattedAmount + "," + time;
-            if (!name.isBlank() &&name.chars().allMatch(Character::isAlphabetic)) {
-                newWrite.write(str);
-                newWrite.newLine();
-                newWrite.close();
-//                System.out.println("Successfully wrote to the file.");
-                String str2 = "Your name as " + name + " with bid amount " + formattedAmount + " has been successfully saved";
-                JOptionPane.showMessageDialog(null, str2);
-            } else {
-                JOptionPane.showMessageDialog(null, "Your name contains non-alphabetics characters");
-            }
-
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+    class Bids implements JSONStreamAware {
+        @Override
+        public String toString() {
+            return "Bids{" +
+                    "id='" + id + '\'' +
+                    ", operator='" + operator + '\'' +
+                    ", ocity='" + ocity + '\'' +
+                    ", dcity='" + dcity + '\'' +
+                    ", oitem='" + oitem + '\'' +
+                    ", amount=" + amount +
+                    '}';
         }
 
-        // TODO add your handling code here:
+        String id = "";
+        String operator = "", ocity = "", dcity = "", oitem = "";
+        double amount = 0;
+
+        public Bids(String id, String ocity, String dcity, String oitem, double amount, String operator) {
+            this.id = id;
+            this.operator = operator;
+            this.ocity = ocity;
+            this.dcity = dcity;
+            this.oitem = oitem;
+            this.amount = amount;
+        }
+
+        @Override
+        public void writeJSONString(Writer out) throws IOException {
+
+            Map obj = new LinkedHashMap();
+            obj.put("contract id", id);
+            obj.put("ocity", ocity);
+            obj.put("dcity", dcity);
+            obj.put("oitem", oitem);
+            obj.put("amount", amount);
+            obj.put("operator", operator);
+            jsonText = JSONValue.toJSONString(obj);
+            JSONValue.writeJSONString(obj, out);
+
+        }
+    }
+
+    public void readOriginBidfile() throws IOException {
+        FileReader fileReader = new FileReader(bidsFileName);
+        int character;
+        while ((character = fileReader.read()) != -1) {
+            stringWriter.write(character);
+        }
+
+    }
+
+    public boolean isNameValid(String name) {
+        return !name.isBlank() && name.chars().allMatch(Character::isAlphabetic);
+    }
+
+    public void loops(String[] s) {
+        for (String ss : s) {
+            System.out.println(ss);
+        }
+    }
+
+    private void appendToFile(String data) {
+        JSONParser parser = new JSONParser();
+        JSONArray bidArray =new JSONArray();
+
+        try {
+            FileReader reader = new FileReader(bidsFileName);
+            Object obj = parser.parse(reader);
+            bidArray = (JSONArray) obj;
+            System.out.println("try bidarr size " +bidArray.size());
+            System.out.println(bidArray.toJSONString());
+            reader.close();
+        } catch (IOException e) {
+            bidArray = new JSONArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // Create a JSON object for the new bid
+        JSONObject bidObject = new JSONObject();
+        String[] dataParts = data.split(",");
+//        loops(dataParts);
+        bidObject.put("contractID", dataParts[0]);
+        bidObject.put("originCity", dataParts[1]);
+        bidObject.put("destCity", dataParts[2]);
+        bidObject.put("orderItem", dataParts[3]);
+        bidObject.put("amount", Integer.parseInt(dataParts[4]));
+        bidObject.put("operator", dataParts[5]);
+        bidObject.put("Time", dataParts[6]);
+        System.out.println("bidobj" + bidObject);
+        if (bidArray == null) {
+            bidArray = new JSONArray();
+        }
+        bidArray.add(bidObject);
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(optionsFileName,true));
+            FileWriter writer2 = new FileWriter(bidsFileName,false);
+            writer.write(info1);
+            writer.newLine();
+            writer.flush();
+            writer.close();
+            writer2.write(bidArray.toJSONString());
+            writer2.flush();
+            writer2.close();
+            String str = String.format(
+                    jTextName.getText() + " with bid amount $%d.00 has been successfully saved.",
+                    (int) jSpinner1.getValue());
+            displayMessage(str, "bids save success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException e) {
+            System.err.println("Error appending data to the file: " + e.getMessage());
+        }
+    }
+
+    private void displayMessage(String message, String title, int messageType) {
+        JOptionPane.showMessageDialog(this, message, title, messageType);
+    }
+
+    public void readFromFile(String readout) {
+        line = "";
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(ConfirmBid.bidsFileName));
+            line = reader.readLine();
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        readout = line.toString();
+        System.out.println(line);
+
+    }
+
+//    public void saveBidsTojson(String ID, String octiy, String dcity, double amount, String oitem, String operator,StringWriter stringWriter,BufferedWriter newWriteForBIDS) throws IOException {
+//        System.out.println("function savebidstojson performed");
+//        JSONArray list = new JSONArray();
+//        String jsonText;
+////        String operator = jTextName.getText();
+////        double amount = Double.valueOf(jSpinner1.getValue().toString());
+////        int amount = Integer.valueOf(jSpinner1.getValue().toString());
+////        String ID = JLabelContractlD.getText();
+////        String octiy = JLabelOrigin.getText();
+////        String dcity = JLabelDestination.getText();
+////        String oitem = JLabelOrderltem.getText();
+//        Bids bids1 = new Bids(ID, octiy, dcity, oitem, amount, operator);
+//        list.add(bids1);
+//        System.out.println("new bids1 infos " + bids1);
+//        System.out.println("jsonArray size +  " + list.size());
+//        deleteFileContents();
+//        bidsRLT.setText(stringWriter.toString());
+//
+//        System.out.println("stringWriter 1 + blank?  " + stringWriter);
+////        bids1.writeJSONString(stringWriter);
+//        JSONValue.writeJSONString(list,stringWriter);
+//        System.out.println("stringwriter-in-method? " + stringWriter);
+////        String str = stringWriter.toString();
+////        System.out.println("to str " + str);
+//        newWriteForBIDS.write(String.valueOf(stringWriter));
+//        newWriteForBIDS.flush();
+//        newWriteForBIDS.close();
+//        stringWriter.getBuffer().setLength(0);
+//        System.out.println("after newWriteForBIDS.stringWriter to .json" + stringWriter);
+//
+//    }
+
+    public void saveBidsTojson() throws IOException {
+        System.out.println("function savebidstojson performed");
+        BufferedWriter newWriteForBIDS = new BufferedWriter(new FileWriter(bidsFileName, false));
+        String operator = jTextName.getText();
+        double amount = Double.valueOf(jSpinner1.getValue().toString());
+        String ID = JLabelContractlD.getText();
+        String octiy = JLabelOrigin.getText();
+        String dcity = JLabelDestination.getText();
+        String oitem = JLabelOrderltem.getText();
+        if (!operator.isBlank() && operator.chars().allMatch(Character::isAlphabetic)) {
+            jsonArray.add(new Bids(ID, octiy, dcity, oitem, amount, operator));
+            System.out.println("bids size +  " + jsonArray.size());
+            System.out.println("out 1 + " + stringWriter.toString());
+            System.out.println("string write");
+            jsonArray.writeJSONString(stringWriter);
+            deleteFileContents();
+//        newWriteForBIDS.write("clean at beginning -1 ");
+            newWriteForBIDS.write(stringWriter.toString());
+            newWriteForBIDS.close();
+            System.out.println("after newWriteForBIDS.write to .json" + stringWriter.toString());
+            stringWriter = new StringWriter();
+//        newWriteForBIDS.write("clean at beginning -2 ");
+
+        }
+    }
+
+    public void deleteFileContents() {
+        try {
+            FileWriter writer = new FileWriter(bidsFileName);
+            writer.write("");
+            writer.close();
+            System.out.println("file delete complete");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void JButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JButtonSaveActionPerformed
+        jTextName.setText("");
+        checkerCounter++;
+        String dataline = dataFactory();
+        appendToFile(dataline);
+
     }//GEN-LAST:event_JButtonSaveActionPerformed
 
+    public String checkerOP(int checkerCounter) {
+        if (checkerCounter > 116) checkerCounter = 65;
+        return "op" + (char) checkerCounter;
+    }
+
+    public String dataFactory() {
+        ZonedDateTime currentDate;
+        currentDate = ZonedDateTime.now(ZoneId.of("America/Los_Angeles"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'  'HH:mm:ss 'PST'");
+        String time = formatter.format(currentDate);
+        double amount = Double.valueOf(jSpinner1.getValue().toString());
+        String operator = jTextName.getText();
+        String ID = JLabelContractlD.getText();
+        String octiy = JLabelOrigin.getText();
+        String dcity = JLabelDestination.getText();
+        String oitem = JLabelOrderltem.getText();
+        info1 = String.format(operator + "," + ID + ", $" + amount + "," + time);
+        System.out.println("info1 + " + info1);
+        return String.format(ID + "," + octiy + "," + dcity + "," + oitem + "," + (int) amount + "," + operator + "," + time + ",");
+    }
+
     private void JButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JButtonCancelActionPerformed
+        jTextName.setText("");
         dispose();
 // TODO add your handling code here:
     }//GEN-LAST:event_JButtonCancelActionPerformed
@@ -276,6 +494,7 @@ public class ConfirmBid extends JDialog {
     private javax.swing.JLabel JLabelDestination;
     private javax.swing.JLabel JLabelOrderltem;
     private javax.swing.JLabel JLabelOrigin;
+    private javax.swing.JTextArea bidsRLT;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -286,6 +505,7 @@ public class ConfirmBid extends JDialog {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuNewContract;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextField jTextName;
     // End of variables declaration//GEN-END:variables

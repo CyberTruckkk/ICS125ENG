@@ -4,19 +4,28 @@
  */
 package selectcontract;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import javax.swing.*;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.*;
 
 /**
  * @author wenlong
  */
 public class NewContract extends javax.swing.JDialog {
 
-    private Contract newContract;
+    private final Contract newContract;
     public ContractModel theModel;
     public static String newContractSave = System.getProperty("user.dir") + "\\src\\selectcontract\\contracts.txt";
+    public static String newContractSaveXML = System.getProperty("user.dir") + "\\src\\selectcontract\\contracts.xml";
     private final String initial = "null";
     public static boolean isUpdate = false;
 
@@ -99,11 +108,14 @@ public class NewContract extends javax.swing.JDialog {
                                 .addContainerGap())
         );
 
+        orderID.setToolTipText("orderID format:[1-9][a-zA-Z]{3}");
         orderID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 orderIDActionPerformed(evt);
             }
         });
+
+        orderITEM.setToolTipText("order item shouldn't be all digits or empty");
 
         oCITY.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Victoria", "Vancouver", "Seattle", "Nanaimo", "Prince George"}));
         oCITY.addItemListener(new java.awt.event.ItemListener() {
@@ -118,6 +130,7 @@ public class NewContract extends javax.swing.JDialog {
         });
 
         dCITY.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Victoria", "Vancouver", "Seattle", "Nanaimo", "Prince George"}));
+        dCITY.setToolTipText("should be same with origin city");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -246,6 +259,48 @@ public class NewContract extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void writeContractToXML(String contractID, String originCity, String destCity, String orderItem) {
+        try {
+            File inputFile = new File(newContractSaveXML);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputFile);
+
+            Element rootElement = doc.getDocumentElement();
+
+            Element contract = doc.createElement("contract");
+            rootElement.appendChild(contract);
+
+            Element contractId = doc.createElement("contractID");
+            contractId.appendChild(doc.createTextNode(contractID));
+            contract.appendChild(contractId);
+
+            Element originElement = doc.createElement("originCity");
+            originElement.appendChild(doc.createTextNode(originCity));
+            contract.appendChild(originElement);
+
+            Element destinationElement = doc.createElement("destCity");
+            destinationElement.appendChild(doc.createTextNode(destCity));
+            contract.appendChild(destinationElement);
+
+            Element itemElement = doc.createElement("orderItem");
+            itemElement.appendChild(doc.createTextNode(orderItem));
+            contract.appendChild(itemElement);
+            isUpdate = true;
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+
+            transformer.transform(new DOMSource(doc), new StreamResult(new FileOutputStream(newContractSaveXML)));
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void saveBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBTNActionPerformed
 //        while (!this.newContract.getChecker().contains("pass")) {
         try {
@@ -267,19 +322,10 @@ public class NewContract extends javax.swing.JDialog {
             if (idISduplicated) {
                 CheckBeforeSave.setText("orderID is duplicated");
                 return;
-            }else {
+            } else {
                 this.newContract.setContractID(orderID.getText().toUpperCase());
             }
-            String it = orderITEM.getText();
-            if (oid.isBlank() || it.isBlank()) {
-                CheckBeforeSave.setText("orderID or order item is blank");
-                return;
-            }
-            this.newContract.setOrderItem(orderITEM.getText());
 
-//            System.out.println("300  " + orderID.getText());
-//            orderID.setToolTipText(this.newContract.getChecker());
-//            CheckBeforeSave.setText(this.newContract.getChecker());
             String oc = (String) oCITY.getSelectedItem();
             String dc = (String) dCITY.getSelectedItem();
 //            saveBTN.setToolTipText(this.newContract.getChecker());
@@ -292,39 +338,44 @@ public class NewContract extends javax.swing.JDialog {
 
             this.newContract.setDestCity(dc);
 
-            System.out.println("315");
-            if (this.newContract.getContractID().contains(initial) || this.newContract.getContractID().isBlank()) {
-                System.out.println("initial 317  " + this.newContract.getContractID().contains(initial) + " " + this.newContract.getContractID());
-                System.out.println("isblank 317  " + this.newContract.getContractID().isBlank());
+            String it = orderITEM.getText();
+            if (oid.isBlank() || it.isBlank()) {
+                CheckBeforeSave.setText("orderID or order item is blank");
                 return;
             }
-            System.out.println("318");
+            //if (orderItem.matches("\\d+")
+            if (it.matches("\\d+")) {
+                CheckBeforeSave.setText("order item should't be all digits");
+                return;
+            }
+            this.newContract.setOrderItem(orderITEM.getText());
+            if (this.newContract.getContractID().contains(initial) || this.newContract.getContractID().isBlank()) {
+                return;
+            }
             if (this.newContract.getOriginCity().contains(initial) || this.newContract.getOriginCity().isBlank()) {
                 return;
             }
             if (this.newContract.getDestCity().contains(initial) || newContract.getDestCity().isBlank()) {
                 return;
             }
-            System.out.println("324");
             if (newContract.getOrderItem().contains(initial) || this.newContract.getOrderItem().isBlank()) {
                 return;
             }
             String str = null;
             System.out.println("before str check empty: id.isBlank()||it.isBlank() " + (oid.isBlank() || it.isBlank()));
             str = this.newContract.getContractID() + "," + this.newContract.getOriginCity() + "," + this.newContract.getDestCity() + "," + this.newContract.getOrderItem();
-            System.out.println(str);
+            CheckBeforeSave.setText(str);
             if (str.contains(initial) || str == null || str.isBlank() || str.isEmpty()) {
                 return;
             }
+            writeContractToXML(oid, oc, dc, it);
             BufferedWriter newWrite = new BufferedWriter(new FileWriter(newContractSave, true));
             newWrite.write(str);
-            isUpdate = true;
             resetBTN.doClick();
             newWrite.newLine();
             newWrite.close();
             String str2 = "new contract : " + str + "has been saved successfully";
             JOptionPane.showMessageDialog(null, str2);
-//            cancelBTN.doClick();
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
@@ -336,9 +387,8 @@ public class NewContract extends javax.swing.JDialog {
     private void resetBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetBTNActionPerformed
         this.orderITEM.setText("");
         this.orderID.setText("");
-//        this.orderCITY.setText("");
-//        this.destCITY.setText("");
-        // TODO add your handling code here:
+        this.oCITY.setSelectedIndex(0);
+        this.dCITY.setSelectedIndex(0);
     }//GEN-LAST:event_resetBTNActionPerformed
 
     private void cancelBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBTNActionPerformed
@@ -361,31 +411,8 @@ public class NewContract extends javax.swing.JDialog {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewContract.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewContract.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewContract.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewContract.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    public static void main(String[] args) {
 
-        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 NewContract dialog = new NewContract(new javax.swing.JFrame(), true);

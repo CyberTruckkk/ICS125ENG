@@ -7,5 +7,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="json-simple-1.1.1" level="project" />
+    <orderEntry type="library" name="w3c-dom" level="project" />
+    <orderEntry type="library" name="json-simple-1.1.11" level="project" />
+    <orderEntry type="library" name="w3c-dom1" level="project" />
   </component>
 </module>

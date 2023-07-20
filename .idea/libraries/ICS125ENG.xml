@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ICS125ENG">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/ICS125ENG/dist/ICS125ENG.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

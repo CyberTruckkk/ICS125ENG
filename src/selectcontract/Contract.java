@@ -28,7 +28,7 @@ public class Contract {
     public void getOrderIdList() {
         String[] token;
         try (FileReader fileReader = new FileReader(newContractSave);
-             BufferedReader bufferedReader = new BufferedReader(new FileReader(newContractSave));) {
+             BufferedReader bufferedReader = new BufferedReader(new FileReader(newContractSave))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 token = line.split(",", 4);

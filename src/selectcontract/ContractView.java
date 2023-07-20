@@ -1,8 +1,15 @@
 package selectcontract;
 
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 /**
  *
  * @author wenlong
@@ -42,8 +49,9 @@ public class ContractView extends JFrame {
         jLabel4 = new javax.swing.JLabel();
         jComboOriginCity = new javax.swing.JComboBox<>();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        JmenuFile = new javax.swing.JMenu();
         jMenuNewContract = new javax.swing.JMenuItem();
+        jMenuItemViewBids = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -175,7 +183,12 @@ public class ContractView extends JFrame {
                 .addContainerGap(55, Short.MAX_VALUE))
         );
 
-        jMenu1.setText("File");
+        JmenuFile.setText("File");
+        JmenuFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmenuFileActionPerformed(evt);
+            }
+        });
 
         jMenuNewContract.setText(" New Contract");
         jMenuNewContract.addActionListener(new java.awt.event.ActionListener() {
@@ -183,9 +196,17 @@ public class ContractView extends JFrame {
                 jMenuNewContractActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuNewContract);
+        JmenuFile.add(jMenuNewContract);
 
-        jMenuBar1.add(jMenu1);
+        jMenuItemViewBids.setText("viewBids");
+        jMenuItemViewBids.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemViewBidsActionPerformed(evt);
+            }
+        });
+        JmenuFile.add(jMenuItemViewBids);
+
+        jMenuBar1.add(JmenuFile);
 
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
@@ -229,8 +250,60 @@ public class ContractView extends JFrame {
     }//GEN-LAST:event_jComboOriginCityActionPerformed
 
     private void jMenuNewContractActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNewContractActionPerformed
+
+
+
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuNewContractActionPerformed
+
+    private void JmenuFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmenuFileActionPerformed
+        System.out.println("viewBidsActionPerformed() before try");
+        try {
+            System.out.println("viewBidsActionPerformed()");
+            ViewBids viewBids = new ViewBids();
+            FileReader fileReader = new FileReader(ConfirmBid.bidsFileName);
+            JSONParser parser = new JSONParser();
+            JSONArray jsonArr = (JSONArray) parser.parse(fileReader);
+            System.out.println("view bids action " + jsonArr.toString());
+            viewBids.setBids(jsonArr);
+            viewBids.showBids();
+            fileReader.close();
+            viewBids.setVisible(true);
+        } catch (FileNotFoundException e) {
+            // Handle file not found exception
+            e.printStackTrace();
+        } catch (IOException e) {
+            // Handle IO exception
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_JmenuFileActionPerformed
+
+    private void jMenuItemViewBidsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemViewBidsActionPerformed
+        System.out.println("viewBidsActionPerformed() before try");
+        try {
+            System.out.println("viewBidsActionPerformed()");
+            ViewBids viewBids = new ViewBids();
+            FileReader fileReader = new FileReader(ConfirmBid.bidsFileName);
+            JSONParser parser = new JSONParser();
+            JSONArray jsonArr = (JSONArray) parser.parse(fileReader);
+            System.out.println("view bids action " + jsonArr.toString());
+            viewBids.setBids(jsonArr);
+            viewBids.showBids();
+            fileReader.close();
+            viewBids.setVisible(true);
+        } catch (FileNotFoundException e) {
+            // Handle file not found exception
+            e.printStackTrace();
+        } catch (IOException e) {
+            // Handle IO exception
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItemViewBidsActionPerformed
 
     public void setOriginCityList(String[] cityList){
         final DefaultComboBoxModel model = new DefaultComboBoxModel(cityList);
@@ -282,7 +355,7 @@ public class ContractView extends JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -315,6 +388,7 @@ public class ContractView extends JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu JmenuFile;
     private javax.swing.JButton jBidButton;
     private javax.swing.JComboBox<String> jComboOriginCity;
     private javax.swing.JLabel jLabel1;
@@ -327,13 +401,16 @@ public class ContractView extends JFrame {
     private javax.swing.JLabel jLabelDestCity;
     private javax.swing.JLabel jLabelOrderItem;
     private javax.swing.JLabel jLabelOriginCity;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItemViewBids;
     private javax.swing.JMenuItem jMenuNewContract;
     private javax.swing.JButton jNextButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton jPrevButton;
+
+    public void viewBidsListener(ContractController.ViewBidsListener viewBidsListener) {
+    }
     // End of variables declaration//GEN-END:variables
 }
